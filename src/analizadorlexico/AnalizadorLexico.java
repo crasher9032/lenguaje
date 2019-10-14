@@ -30,18 +30,20 @@ public class AnalizadorLexico {
                 switch (String.valueOf(entrada.charAt(contador))) {
                     case "+":
                         palabraAux = palabraAux + "+";
-                        contador++;
-                        tokens.add("suma");
+                        contador++;                        
 
                         if (contador < longitud) {
                             if (String.valueOf(entrada.charAt(contador)).equals("+")) {
                                 palabraAux = palabraAux + "+";
+                                tokens.add("incremento");
                                 JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es incremento");
                                 contador++;
                             } else {
+                                tokens.add("suma");
                                 JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es suma");
                             }
                         } else {
+                            tokens.add("suma");
                             JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es suma");
                         }
 
@@ -53,24 +55,29 @@ public class AnalizadorLexico {
                         if (contador < longitud) {
                             if (String.valueOf(entrada.charAt(contador)).equals("-")) {
                                 palabraAux = palabraAux + "-";
+                                tokens.add("decremento");
                                 JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es decremento");
                                 contador++;
                             } else {
+                                tokens.add("resta");
                                 JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es resta");
                             }
                         } else {
+                            tokens.add("resta");
                             JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es resta");
                         }
                         palabraAux = "";
                         break;
                     case "*":
                         palabraAux = palabraAux + "*";
+                        tokens.add("multiplicacion");
                         JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es multiplicacion");
                         palabraAux = "";
                         contador++;
                         break;
                     case "/":
                         palabraAux = palabraAux + "/";
+                        tokens.add("division");
                         JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es division");
                         palabraAux = "";
                         contador++;
@@ -80,6 +87,7 @@ public class AnalizadorLexico {
                         for (int i = 1; i == 1;) {
                             if (String.valueOf(entrada.charAt(contador)).equals("'")) {
                                 contador++;
+                                tokens.add("palabra");
                                 JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es una palabra");
                                 i = 0;
                             } else {
@@ -90,21 +98,27 @@ public class AnalizadorLexico {
                         palabraAux = "";
                         break;
                     case "=":
+                        palabraAux = palabraAux + "=";
                         contador++;
                         if(String.valueOf(entrada.charAt(contador)).equals("=")){
+                            palabraAux = palabraAux + "=";
+                            tokens.add("comparacion");                            
+                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es incremento");
                             //declarar vector y almacenar
                         }else{
+                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es invalido");
                             //asignacion
                             contador--;
                         }
                     break;
                     case "0":
                         if(palabraAux.length()>1){
-                        JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + "es invalida");
+                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + "es invalida");
                         }else{
-                        JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es valor 0");
-                        palabraAux = "";
-                        contador++;
+                            tokens.add("cero");
+                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es valor 0");
+                            palabraAux = "";
+                            contador++;
                         }
                         break;
                     case "(":
@@ -153,16 +167,13 @@ public class AnalizadorLexico {
                         palabraAux = "";
                         contador++;
                         break;
-                    case "<>":
+                    case "<":
                         contador++;
                         if(String.valueOf(entrada.charAt(contador)).equals(">")){
                             tokens.add("diferente");
                         }else{
                             
                         }
-                        break;
-                    case "==":
-                        
                         break;
                     case ":":
                         contador++;
