@@ -7,12 +7,12 @@ import java.util.*;
  */
 public class AnalizadorLexico {
     public static void main(String[] args) {
-        Archivo a = new Archivo();
-        String entrada=a.LeerGrafico();
-        System.out.println(entrada);
+        //Archivo a = new Archivo();
+        //String entrada=a.LeerGrafico();
+        //System.out.println(entrada);
         boolean numero=true;
         boolean fin = false;
-        //String entrada = JOptionPane.showInputDialog("Escribe algo");
+        String entrada = JOptionPane.showInputDialog("Escribe algo");
         String palabraAux = "";
         List<String> identificadores=new ArrayList<String>();
         List<String> tokens=new ArrayList<String>();
@@ -36,15 +36,15 @@ public class AnalizadorLexico {
                             if (String.valueOf(entrada.charAt(contador)).equals("+")) {
                                 palabraAux = palabraAux + "+";
                                 tokens.add("incremento");
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es incremento");
+                                System.out.println(entrada + "\n" + palabraAux + " es incremento");
                                 contador++;
                             } else {
                                 tokens.add("suma");
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es suma");
+                                System.out.println(entrada + "\n" + palabraAux + " es suma");
                             }
                         } else {
                             tokens.add("suma");
-                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es suma");
+                            System.out.println(entrada + "\n" + palabraAux + " es suma");
                         }
 
                         palabraAux = "";
@@ -56,29 +56,29 @@ public class AnalizadorLexico {
                             if (String.valueOf(entrada.charAt(contador)).equals("-")) {
                                 palabraAux = palabraAux + "-";
                                 tokens.add("decremento");
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es decremento");
+                                System.out.println(entrada + "\n" + palabraAux + " es decremento");
                                 contador++;
                             } else {
                                 tokens.add("resta");
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es resta");
+                                System.out.println(entrada + "\n" + palabraAux + " es resta");
                             }
                         } else {
                             tokens.add("resta");
-                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es resta");
+                            System.out.println(entrada + "\n" + palabraAux + " es resta");
                         }
                         palabraAux = "";
                         break;
                     case "*":
                         palabraAux = palabraAux + "*";
                         tokens.add("multiplicacion");
-                        JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es multiplicacion");
+                        System.out.println(entrada + "\n" + palabraAux + " es multiplicacion");
                         palabraAux = "";
                         contador++;
                         break;
                     case "/":
                         palabraAux = palabraAux + "/";
                         tokens.add("division");
-                        JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es division");
+                        System.out.println(entrada + "\n" + palabraAux + " es division");
                         palabraAux = "";
                         contador++;
                         break;
@@ -88,7 +88,7 @@ public class AnalizadorLexico {
                             if (String.valueOf(entrada.charAt(contador)).equals("'")) {
                                 contador++;
                                 tokens.add("palabra");
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es una palabra");
+                                System.out.println(entrada + "\n" + palabraAux + " es una palabra");
                                 i = 0;
                             } else {
                                 palabraAux = palabraAux + String.valueOf(entrada.charAt(contador));
@@ -99,24 +99,31 @@ public class AnalizadorLexico {
                         break;
                     case "=":
                         palabraAux = palabraAux + "=";
-                        contador++;
-                        if(String.valueOf(entrada.charAt(contador)).equals("=")){
-                            palabraAux = palabraAux + "=";
-                            tokens.add("comparacion");                            
-                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es incremento");
-                            //declarar vector y almacenar
-                        }else{
-                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es invalido");
-                            //asignacion
-                            contador--;
+                        contador++;                        
+
+                        if (contador < longitud) {
+                            if (String.valueOf(entrada.charAt(contador)).equals("=")) {
+                                palabraAux = palabraAux + "=";
+                                tokens.add("comparacion");
+                                System.out.println(entrada + "\n" + palabraAux + " es comparacion");
+                                contador++;
+                            } else {
+                                //tokens.add("error");
+                                System.out.println(entrada + "\n" + palabraAux + " es error");
+                            }
+                        } else {
+                            //tokens.add("suma");
+                            System.out.println(entrada + "\n" + palabraAux + " es error");
                         }
+
+                        palabraAux = "";
                     break;
                     case "0":
                         if(palabraAux.length()>1){
-                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + "es invalida");
+                            System.out.println(entrada + "\n" + palabraAux + "es invalida");
                         }else{
                             tokens.add("cero");
-                            JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es valor 0");
+                            System.out.println(entrada + "\n" + palabraAux + " es valor 0");
                             palabraAux = "";
                             contador++;
                         }
@@ -126,7 +133,7 @@ public class AnalizadorLexico {
                         for (int i = 1; i == 1;) {
                             if (String.valueOf(entrada.charAt(contador)).equals(")")) {
                                 contador++;
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " esta entre parentesis");
+                                System.out.println(entrada + "\n" + palabraAux + " esta entre parentesis");
                                 i = 0;
                             } else {
                                 palabraAux = palabraAux + String.valueOf(entrada.charAt(contador));
@@ -137,7 +144,7 @@ public class AnalizadorLexico {
                         break;
                     case ")":
                         palabraAux = palabraAux + ")";
-                        JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " falta cerrar parentesis");
+                        System.out.println(entrada + "\n" + palabraAux + " falta cerrar parentesis");
                         palabraAux = "";
                         contador++;            
                         break;
@@ -146,7 +153,7 @@ public class AnalizadorLexico {
                         for (int i = 1; i == 1;) {
                             if(String.valueOf(entrada.charAt(contador)).equals("}")) {
                                 contador++;
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " esta entre llaves");
+                                System.out.println(entrada + "\n" + palabraAux + " esta entre llaves");
                                 i = 0;
                             } else {
                                 palabraAux = palabraAux + String.valueOf(entrada.charAt(contador));
@@ -157,36 +164,103 @@ public class AnalizadorLexico {
                         break;
                     case "}":
                         palabraAux = palabraAux + ")";
-                        JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " falta cerrar llaves");
+                        System.out.println(entrada + "\n" + palabraAux + " falta cerrar llaves");
                         palabraAux = "";
                         contador++;            
                         break;
                     case ";":
                         palabraAux = palabraAux + ";";
-                        JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es fin de linea");
+                        System.out.println(entrada + "\n" + palabraAux + " es fin de linea");
                         palabraAux = "";
                         contador++;
                         break;
                     case "<":
-                        contador++;
+                        palabraAux = palabraAux + "<";
+                        contador++;                        
+
+                        if (contador < longitud) {
+                            switch(String.valueOf(entrada.charAt(contador))){
+                                case "=":
+                                    palabraAux = palabraAux + "=";
+                                    tokens.add("menor igual");
+                                    System.out.println(entrada + "\n" + palabraAux + " es menor igual que");
+                                    contador++;                                    
+                                    break;
+                                case ">":
+                                    palabraAux = palabraAux + ">";
+                                    tokens.add("diferente");
+                                    System.out.println(entrada + "\n" + palabraAux + " es diferente que");
+                                    contador++;                                    
+                                    break;
+                                default:
+                                    tokens.add("menor");
+                                    System.out.println(entrada + "\n" + palabraAux + " es menor que");
+                                    break;
+                            }
+                        }else{
+                            tokens.add("menor");
+                            System.out.println(entrada + "\n" + palabraAux + " es menor que");
+                        }
+                        palabraAux = "";                                                
+                        /*contador++;
                         if(String.valueOf(entrada.charAt(contador)).equals(">")){
                             tokens.add("diferente");
                         }else{
                             
+                        }*/
+                        break;
+                    case ">":
+                        palabraAux = palabraAux + ">";
+                        contador++;                        
+
+                        if (contador < longitud) {
+                            if (String.valueOf(entrada.charAt(contador)).equals("=")) {
+                                palabraAux = palabraAux + "=";
+                                tokens.add("mayor igual");
+                                System.out.println(entrada + "\n" + palabraAux + " es mayor igual que");
+                                contador++;
+                            } else {
+                                tokens.add("mayor");
+                                System.out.println(entrada + "\n" + palabraAux + " es mayor que");
+                            }
+                        } else {
+                            tokens.add("mayor");
+                            System.out.println(entrada + "\n" + palabraAux + " es mayor que");
                         }
+                        palabraAux = "";
                         break;
                     case ":":
-                        contador++;
+                        palabraAux = palabraAux + ":";
+                        contador++;                        
+
+                        if (contador < longitud) {
+                            if (String.valueOf(entrada.charAt(contador)).equals("=")) {
+                                palabraAux = palabraAux + "=";
+                                tokens.add("igualacion");
+                                System.out.println(entrada + "\n" + palabraAux + " es igualacion");
+                                contador++;
+                            } else {
+                                //tokens.add("error");
+                                System.out.println(entrada + "\n" + palabraAux + " es error");
+                            }
+                        } else {
+                            //tokens.add("suma");
+                            System.out.println(entrada + "\n" + palabraAux + " es error");
+                        }
+
+                        palabraAux = "";                        
+                        
+                        /*contador++;
                         if(String.valueOf(entrada.charAt(contador)).equals("=")){
                             if(tokens.get(tokens.size()-1)=="identificador"){
                             tokens.add("asignacion");
                             contador++;    
                             }else{
-                            JOptionPane.showMessageDialog(null, "Falta identificador");
+                            System.out.println("Falta identificador");
                             }
                         }else{
                             
-                        }
+                        }*/
                     break;
                     default:
                         for(int i=contador;i<longitud;){
@@ -211,7 +285,7 @@ public class AnalizadorLexico {
                         switch(palabraAux){
                             case "si":
                                 contador++;
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es palabra reservada");
+                                System.out.println(entrada + "\n" + palabraAux + " es palabra reservada");
                                 tokens.add("if");
                                 if(String.valueOf(entrada.charAt(contador)).equals("(")){
                                     
@@ -220,7 +294,7 @@ public class AnalizadorLexico {
                                 }
                                 break;
                             case "sino":
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es palabra reservada");
+                                System.out.println(entrada + "\n" + palabraAux + " es palabra reservada");
                                 if(tokens.get(tokens.size()-1)=="if"){
                                     tokens.add("else");
                                     contador++;
@@ -229,19 +303,19 @@ public class AnalizadorLexico {
                                 }
                                 break;
                             case "pala":
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es palabra reservada");
+                                System.out.println(entrada + "\n" + palabraAux + " es palabra reservada");
                                 break;
                             case "num":
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es palabra reservada");
+                                System.out.println(entrada + "\n" + palabraAux + " es palabra reservada");
                                 break;
                             case "ciclo":
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es palabra reservada");
+                                System.out.println(entrada + "\n" + palabraAux + " es palabra reservada");
                                 break;
                             case "otto":
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es palabra reservada");                                
+                                System.out.println(entrada + "\n" + palabraAux + " es palabra reservada");                                
                                 break;
                             case "imprimir":
-                                JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es palabra reservada");                                
+                                System.out.println(entrada + "\n" + palabraAux + " es palabra reservada");                                
                                 break;
                             default:
                                 for(int i=0;i<palabraAux.length()&&numero==true;i++){
@@ -274,16 +348,16 @@ public class AnalizadorLexico {
                                         String.valueOf(palabraAux.charAt(0)).equals("_"))
 
                                     {
-                                        JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " no es un identificador valido");
+                                        System.out.println(entrada + "\n" + palabraAux + " no es un identificador valido");
                                     }
                                     else{
                                     identificadores.add(palabraAux);
-                                    JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es un identificador");
+                                    System.out.println(entrada + "\n" + palabraAux + " es un identificador");
                                     }
                                     break;
                                 }
                                 if(numero==true){
-                                    JOptionPane.showMessageDialog(null, entrada + "\n" + palabraAux + " es un numero");
+                                    System.out.println(entrada + "\n" + palabraAux + " es un numero");
                                 }
                         }
                         palabraAux = "";
