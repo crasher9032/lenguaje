@@ -110,30 +110,21 @@ public class AnalizadorLexico {
                                 System.out.println(palabraAux + " es comparacion");
                                 contador++;
                             } else {
-                                //tokens.add("error");
-                                System.out.println(palabraAux + " es error");
+                                tokens.add("error");
+                                System.out.println(palabraAux + " es error lexico");
                             }
                         } else {
-                            //tokens.add("suma");
-                            System.out.println(palabraAux + " es error");
+                            tokens.add("error");
+                            System.out.println(palabraAux + " es error lexico");
                         }
 
                         palabraAux = "";
                     break;
-                    case "0":
-                        if(palabraAux.length()>1){
-                            System.out.println(palabraAux + "es invalida");
-                        }else{
-                            tokens.add("cero");
-                            System.out.println(palabraAux + " es valor 0");
-                            palabraAux = "";
-                            contador++;
-                        }
-                        break;
                     case "(":
                         contador++;
                         for (int i = 1; i == 1;) {
                             if (String.valueOf(entrada.charAt(contador)).equals(")")) {
+                                tokens.add("parentesis");
                                 contador++;
                                 System.out.println(palabraAux + " esta entre parentesis");
                                 i = 0;
@@ -146,7 +137,8 @@ public class AnalizadorLexico {
                         break;
                     case ")":
                         palabraAux = palabraAux + ")";
-                        System.out.println(palabraAux + " falta cerrar parentesis");
+                        tokens.add("error");
+                        System.out.println(palabraAux + " falta cerrar parentesis (err lexico)");
                         palabraAux = "";
                         contador++;            
                         break;
@@ -154,6 +146,7 @@ public class AnalizadorLexico {
                         contador++;
                         for (int i = 1; i == 1;) {
                             if(String.valueOf(entrada.charAt(contador)).equals("}")) {
+                                tokens.add("llave");
                                 contador++;
                                 System.out.println(palabraAux + " esta entre llaves");
                                 i = 0;
@@ -166,12 +159,14 @@ public class AnalizadorLexico {
                         break;
                     case "}":
                         palabraAux = palabraAux + ")";
-                        System.out.println(palabraAux + " falta cerrar llaves");
+                        tokens.add("error");
+                        System.out.println(palabraAux + " falta cerrar llaves (err lexico)");
                         palabraAux = "";
                         contador++;            
                         break;
                     case ";":
                         palabraAux = palabraAux + ";";
+                        tokens.add("fin");
                         System.out.println(palabraAux + " es fin de linea");
                         palabraAux = "";
                         contador++;
@@ -243,11 +238,11 @@ public class AnalizadorLexico {
                                 contador++;
                             } else {
                                 tokens.add("error");
-                                System.out.println(palabraAux + " falta =");
+                                System.out.println(palabraAux + " falta = (err lexico)");
                             }
                         } else {
                             tokens.add("error");
-                            System.out.println(palabraAux + " falta =");
+                            System.out.println(palabraAux + " falta = (err lexico)");
                         }
 
                         palabraAux = "";                        
@@ -325,18 +320,23 @@ public class AnalizadorLexico {
                             default:
                                 if(simbolo.matches("[A-Z].*") || simbolo.matches("[a-z].*") ||
                                    simbolo.matches("[0-9].*") || simbolo.equals("_")){                                    
-                                    if(palabraAux.matches("[0-9]*") && continuar){
-                                        tokens.add("numero");
-                                        System.out.println(palabraAux + " es un numero");
+                                    if(palabraAux.matches("[0-9]*")){
+                                        if(simbolo.equals("0")){
+                                            tokens.add("error");
+                                            System.out.println(palabraAux + " es un numero invalido (err lexico)");                                             
+                                        }else{
+                                            tokens.add("numero");
+                                            System.out.println(palabraAux + " es un numero");                                          
+                                        }
                                         continuar = false;
                                     }
                                     if(continuar){
                                         if(String.valueOf(palabraAux.charAt(0)).matches("[0-9].*") ||
                                            String.valueOf(palabraAux.charAt(0)).equals("_")){
                                             tokens.add("error");
-                                            System.out.println(palabraAux + " es ident. INVALIDO");
+                                            System.out.println(palabraAux + " es ident. INVALIDO (err lexico)");
                                         }else{
-                                            tokens.add("ident");
+                                            tokens.add("identif");
                                             System.out.println(palabraAux + " es identificador");
                                         }     
                                     }  
@@ -346,7 +346,7 @@ public class AnalizadorLexico {
                                 }              
                                 break;
                         }
-                        contador++;
+                        //contador++;
                         continuar = true; 
                         palabraAux = "";
                         simbolo = "";
