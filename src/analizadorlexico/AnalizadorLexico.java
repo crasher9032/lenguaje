@@ -121,48 +121,32 @@ public class AnalizadorLexico {
                         palabraAux = "";
                     break;
                     case "(":
-                        contador++;
-                        for (int i = 1; i == 1;) {
-                            if (String.valueOf(entrada.charAt(contador)).equals(")")) {
-                                tokens.add("parentesis");
-                                contador++;
-                                System.out.println(palabraAux + " esta entre parentesis");
-                                i = 0;
-                            } else {
-                                palabraAux = palabraAux + String.valueOf(entrada.charAt(contador));
-                                contador++;
-                            }
-                        }
+                        palabraAux = palabraAux + "(";
+                        tokens.add("abrirParentesis");
+                        System.out.println(palabraAux + " abre parentesis");
                         palabraAux = "";
+                        contador++; 
                         break;
                     case ")":
                         palabraAux = palabraAux + ")";
-                        tokens.add("error");
-                        System.out.println(palabraAux + " falta cerrar parentesis (err lexico)");
+                        tokens.add("cerrarParentesis");
+                        System.out.println(palabraAux + " ciella parentesis");
                         palabraAux = "";
-                        contador++;            
+                        contador++;         
                         break;
                     case "{":
-                        contador++;
-                        for (int i = 1; i == 1;) {
-                            if(String.valueOf(entrada.charAt(contador)).equals("}")) {
-                                tokens.add("llave");
-                                contador++;
-                                System.out.println(palabraAux + " esta entre llaves");
-                                i = 0;
-                            } else {
-                                palabraAux = palabraAux + String.valueOf(entrada.charAt(contador));
-                                contador++;
-                            }
-                        }
+                        palabraAux = palabraAux + "{";
+                        tokens.add("abrirLlaves");
+                        System.out.println(palabraAux + " abre llaves");
+                        contador++; 
                         palabraAux = "";
                         break;
                     case "}":
-                        palabraAux = palabraAux + ")";
-                        tokens.add("error");
-                        System.out.println(palabraAux + " falta cerrar llaves (err lexico)");
+                        palabraAux = palabraAux + "}";
+                        tokens.add("cerrarLlaves");
+                        System.out.println(palabraAux + " ciella llaves");
                         palabraAux = "";
-                        contador++;            
+                        contador++;          
                         break;
                     case ";":
                         palabraAux = palabraAux + ";";
@@ -274,7 +258,6 @@ public class AnalizadorLexico {
                         }
                         switch(palabraAux){
                             case "si":
-                                contador++;
                                 System.out.println(palabraAux + " es palabra reservada");
                                 tokens.add("if");
                                 /*if(String.valueOf(entrada.charAt(contador)).equals("(")){
