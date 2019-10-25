@@ -1,29 +1,33 @@
 package analizadorlexico;
+
 import javax.swing.JOptionPane;
 import java.util.*;
+
 /**
  *
  * @author JaviCo & Tavo
  */
 public class AnalizadorLexico {
+
     public static void main(String[] args) {
         //Archivo a = new Archivo();
         //String entrada=a.LeerGrafico();
         //System.out.println(entrada);
-        boolean continuar=true;
+        boolean continuar = true;
         boolean fin = false;
         String entrada = JOptionPane.showInputDialog("Escribe algo");
         String palabraAux = "";
         String simbolo = "";
-        List<String> identificadores=new ArrayList<String>();
-        List<String> tokens=new ArrayList<String>();
+        List<String> identificadores = new ArrayList<String>();
+        List<String> tokens = new ArrayList<String>();
         tokens.add("codigo");
         int longitud = entrada.length();
         int contador = 0;
-        
+        int contSintax = 1;
+
         System.out.println(entrada);
         System.out.println("");
-        
+
         while (!fin) {
             try {
                 switch (String.valueOf(entrada.charAt(contador))) {
@@ -32,7 +36,7 @@ public class AnalizadorLexico {
                         break;
                     case "+":
                         palabraAux = palabraAux + "+";
-                        contador++;                        
+                        contador++;
 
                         if (contador < longitud) {
                             if (String.valueOf(entrada.charAt(contador)).equals("+")) {
@@ -101,7 +105,7 @@ public class AnalizadorLexico {
                         break;
                     case "=":
                         palabraAux = palabraAux + "=";
-                        contador++;                        
+                        contador++;
 
                         if (contador < longitud) {
                             if (String.valueOf(entrada.charAt(contador)).equals("=")) {
@@ -119,26 +123,26 @@ public class AnalizadorLexico {
                         }
 
                         palabraAux = "";
-                    break;
+                        break;
                     case "(":
                         palabraAux = palabraAux + "(";
                         tokens.add("abrirParentesis");
                         System.out.println(palabraAux + " abre parentesis");
                         palabraAux = "";
-                        contador++; 
+                        contador++;
                         break;
                     case ")":
                         palabraAux = palabraAux + ")";
                         tokens.add("cerrarParentesis");
                         System.out.println(palabraAux + " ciella parentesis");
                         palabraAux = "";
-                        contador++;         
+                        contador++;
                         break;
                     case "{":
                         palabraAux = palabraAux + "{";
                         tokens.add("abrirLlaves");
                         System.out.println(palabraAux + " abre llaves");
-                        contador++; 
+                        contador++;
                         palabraAux = "";
                         break;
                     case "}":
@@ -146,7 +150,7 @@ public class AnalizadorLexico {
                         tokens.add("cerrarLlaves");
                         System.out.println(palabraAux + " ciella llaves");
                         palabraAux = "";
-                        contador++;          
+                        contador++;
                         break;
                     case ";":
                         palabraAux = palabraAux + ";";
@@ -157,32 +161,32 @@ public class AnalizadorLexico {
                         break;
                     case "<":
                         palabraAux = palabraAux + "<";
-                        contador++;                        
+                        contador++;
 
                         if (contador < longitud) {
-                            switch(String.valueOf(entrada.charAt(contador))){
+                            switch (String.valueOf(entrada.charAt(contador))) {
                                 case "=":
                                     palabraAux = palabraAux + "=";
                                     tokens.add("menor igual");
                                     System.out.println(palabraAux + " es menor igual que");
-                                    contador++;                                    
+                                    contador++;
                                     break;
                                 case ">":
                                     palabraAux = palabraAux + ">";
                                     tokens.add("diferente");
                                     System.out.println(palabraAux + " es diferente que");
-                                    contador++;                                    
+                                    contador++;
                                     break;
                                 default:
                                     tokens.add("menor");
                                     System.out.println(palabraAux + " es menor que");
                                     break;
                             }
-                        }else{
+                        } else {
                             tokens.add("menor");
                             System.out.println(palabraAux + " es menor que");
                         }
-                        palabraAux = "";                                                
+                        palabraAux = "";
                         /*contador++;
                         if(String.valueOf(entrada.charAt(contador)).equals(">")){
                             tokens.add("diferente");
@@ -192,7 +196,7 @@ public class AnalizadorLexico {
                         break;
                     case ">":
                         palabraAux = palabraAux + ">";
-                        contador++;                        
+                        contador++;
 
                         if (contador < longitud) {
                             if (String.valueOf(entrada.charAt(contador)).equals("=")) {
@@ -212,7 +216,7 @@ public class AnalizadorLexico {
                         break;
                     case ":":
                         palabraAux = palabraAux + ":";
-                        contador++;                        
+                        contador++;
 
                         if (contador < longitud) {
                             if (String.valueOf(entrada.charAt(contador)).equals("=")) {
@@ -229,8 +233,8 @@ public class AnalizadorLexico {
                             System.out.println(palabraAux + " falta = (err lexico)");
                         }
 
-                        palabraAux = "";                        
-                        
+                        palabraAux = "";
+
                         /*contador++;
                         if(String.valueOf(entrada.charAt(contador)).equals("=")){
                             if(tokens.get(tokens.size()-1)=="identificador"){
@@ -242,21 +246,21 @@ public class AnalizadorLexico {
                         }else{
                             
                         }*/
-                    break;
+                        break;
                     default:
                         simbolo = String.valueOf(entrada.charAt(contador));
-                        for(int i=contador;i<longitud;i++){
-                            if(String.valueOf(entrada.charAt(contador)).matches("[A-Z].*") ||
-                               String.valueOf(entrada.charAt(contador)).matches("[a-z].*") ||
-                               String.valueOf(entrada.charAt(contador)).matches("[0-9].*") ||
-                               String.valueOf(entrada.charAt(contador)).equals("_")){
+                        for (int i = contador; i < longitud; i++) {
+                            if (String.valueOf(entrada.charAt(contador)).matches("[A-Z].*")
+                                    || String.valueOf(entrada.charAt(contador)).matches("[a-z].*")
+                                    || String.valueOf(entrada.charAt(contador)).matches("[0-9].*")
+                                    || String.valueOf(entrada.charAt(contador)).equals("_")) {
                                 palabraAux = palabraAux + String.valueOf(entrada.charAt(contador));
                                 contador++;
-                            }else{
+                            } else {
                                 i = longitud + 1;
                             }
                         }
-                        switch(palabraAux){
+                        switch (palabraAux) {
                             case "si":
                                 System.out.println(palabraAux + " es palabra reservada");
                                 tokens.add("if");
@@ -268,77 +272,255 @@ public class AnalizadorLexico {
                                 break;
                             case "sino":
                                 System.out.println(palabraAux + " es palabra reservada");
-                                if(tokens.get(tokens.size()-1)=="if"){
+                                if (tokens.get(tokens.size() - 1) == "if") {
                                     tokens.add("else");
                                     contador++;
-                                }else{
+                                } else {
                                     System.out.println("Falta si");
                                 }
                                 break;
                             case "pala":
                                 tokens.add("String");
                                 System.out.println(palabraAux + " es palabra reservada");
-                                contador++;
+                                //contador++;
                                 break;
                             case "num":
                                 tokens.add("int");
                                 System.out.println(palabraAux + " es palabra reservada");
-                                contador++;
+                                //contador++;
                                 break;
                             case "ciclo":
                                 tokens.add("for");
                                 System.out.println(palabraAux + " es palabra reservada");
-                                contador++;
+                                //contador++;
                                 break;
                             case "otto":
                                 tokens.add("break");
                                 System.out.println(palabraAux + " es palabra reservada");
-                                contador++;
+                                //contador++;
                                 break;
                             case "imprimir":
                                 tokens.add("print");
-                                System.out.println(palabraAux + " es palabra reservada"); 
-                                contador++;
+                                System.out.println(palabraAux + " es palabra reservada");
+                                //contador++;
                                 break;
                             default:
-                                if(simbolo.matches("[A-Z].*") || simbolo.matches("[a-z].*") ||
-                                   simbolo.matches("[0-9].*") || simbolo.equals("_")){                                    
-                                    if(palabraAux.matches("[0-9]*")){
-                                        if(simbolo.equals("0")){
+                                if (simbolo.matches("[A-Z].*") || simbolo.matches("[a-z].*")
+                                        || simbolo.matches("[0-9].*") || simbolo.equals("_")) {
+                                    if (palabraAux.matches("[0-9]*")) {
+                                        if (simbolo.equals("0") && palabraAux.length() != 1) {
                                             tokens.add("error");
-                                            System.out.println(palabraAux + " es un numero invalido (err lexico)");                                             
-                                        }else{
+                                            System.out.println(palabraAux + " es un numero invalido (err lexico)");
+                                        } else {
                                             tokens.add("numero");
-                                            System.out.println(palabraAux + " es un numero");                                          
+                                            System.out.println(palabraAux + " es un numero");
                                         }
                                         continuar = false;
                                     }
-                                    if(continuar){
-                                        if(String.valueOf(palabraAux.charAt(0)).matches("[0-9].*") ||
-                                           String.valueOf(palabraAux.charAt(0)).equals("_")){
+                                    if (continuar) {
+                                        if (String.valueOf(palabraAux.charAt(0)).matches("[0-9].*")
+                                                || String.valueOf(palabraAux.charAt(0)).equals("_")) {
                                             tokens.add("error");
                                             System.out.println(palabraAux + " es ident. INVALIDO (err lexico)");
-                                        }else{
+                                        } else {
+                                            identificadores.add(palabraAux);
                                             tokens.add("identif");
                                             System.out.println(palabraAux + " es identificador");
-                                        }     
-                                    }  
-                                }else{
+                                        }
+                                    }
+                                } else {
                                     tokens.add("error");
                                     System.out.println(simbolo + " es un simbolo desconocido");
-                                }              
+                                    contador++;
+                                }
                                 break;
                         }
                         //contador++;
-                        continuar = true; 
+                        continuar = true;
                         palabraAux = "";
                         simbolo = "";
                         break;
                 }
             } catch (Exception e) {
-                fin = false;
+                //fin = false;
                 break;
             }
         }
+        while (!fin) {
+            try {
+                switch (tokens.get(contSintax)) {
+                    case "String":
+                        try {
+                            if (tokens.get(contSintax + 1).equals("identif")
+                                    && tokens.get(contSintax + 2).equals("fin")) {
+                                System.out.println(tokens.get(contSintax) + " " + tokens.get(contSintax + 1)
+                                        + " " + tokens.get(contSintax + 2) + " ES CORRECTO");
+                                contSintax = contSintax + 3;
+                                continuar = false;
+                            }
+                            if (continuar) {
+                                palabraAux = tokens.get(contSintax) + " " + tokens.get(contSintax + 1)
+                                        + " " + tokens.get(contSintax + 2);
+                                if (tokens.get(contSintax + 1).equals("identif")
+                                        && tokens.get(contSintax + 2).equals("igualacion")) {
+                                    contSintax = contSintax + 3;
+                                    for (int i = 1; i == 1;) {
+                                        if (tokens.get(contSintax).equals("identif")
+                                                || tokens.get(contSintax).equals("palabra")) {
+                                            palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                            contSintax++;
+                                            switch (tokens.get(contSintax)) {
+                                                case "suma":
+                                                    palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                                    contSintax++;
+                                                    break;
+                                                case "fin":
+                                                    palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                                    System.out.println(palabraAux + " ES CORRECTO");
+                                                    contSintax++;
+                                                    i = 0;
+                                                    break;
+                                                default:
+                                                    for (int h = 1; h == 1;) {
+                                                        for (int j = contSintax; j <= tokens.size(); j++) {
+                                                            if (tokens.get(j).equals("fin")) {
+                                                                palabraAux = palabraAux + " " + tokens.get(j);
+                                                                contSintax = j + 1;
+                                                                j = tokens.size() + 5;
+                                                                h = 0;
+                                                            } else {
+                                                                palabraAux = palabraAux + " " + tokens.get(j);
+                                                            }
+                                                        }
+                                                    }
+                                                    System.out.println(palabraAux + " es ERROR SINTACTICO");
+                                                    break;
+                                            }
+                                        } else {
+                                            palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                            System.out.println(palabraAux + " es ERROR SINTACTICO");
+                                            i = 0;
+                                            contSintax++;
+                                        }
+                                    }
+                                } else {
+                                    for (int i = 1; i == 1;) {
+                                        for (int j = contSintax + 1; j <= tokens.size(); j++) {
+                                            if (tokens.get(j).equals("fin")) {
+                                                palabraAux = palabraAux + " " + tokens.get(j);
+                                                contSintax = j + 1;
+                                                j = tokens.size() + 5;
+                                                i = 0;
+                                            } else {
+                                                palabraAux = palabraAux + " " + tokens.get(j);
+                                            }
+                                        }
+                                    }
+                                    System.out.println(palabraAux + " es ERROR SINTACTICO");
+                                }
+                            }
+                            palabraAux = "";
+                            continuar = true;
+                        } catch (Exception e) {
+                            System.out.println(palabraAux + " es ERROR SINTACTICO");
+                            break;
+                        }
+                        break;
+                    case "int":
+                        try {
+                            if (tokens.get(contSintax + 1).equals("identif")
+                                    && tokens.get(contSintax + 2).equals("fin")) {
+                                System.out.println(tokens.get(contSintax) + " " + tokens.get(contSintax + 1)
+                                        + " " + tokens.get(contSintax + 2) + " ES CORRECTO");
+                                contSintax = contSintax + 3;
+                                continuar = false;
+                            }
+                            if (continuar) {
+                                palabraAux = tokens.get(contSintax) + " " + tokens.get(contSintax + 1)
+                                        + " " + tokens.get(contSintax + 2);
+                                if (tokens.get(contSintax + 1).equals("identif")
+                                        && tokens.get(contSintax + 2).equals("igualacion")) {
+                                    contSintax = contSintax + 3;
+                                    for (int i = 1; i == 1;) {
+                                        if (tokens.get(contSintax).equals("identif")
+                                                || tokens.get(contSintax).equals("numero")) {
+                                            palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                            contSintax++;
+                                            switch (tokens.get(contSintax)) {
+                                                case "suma":
+                                                    palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                                    contSintax++;
+                                                    break;
+                                                case "resta":
+                                                    palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                                    contSintax++;                                                    
+                                                    break;
+                                                case "fin":
+                                                    palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                                    System.out.println(palabraAux + " ES CORRECTO");
+                                                    contSintax++;
+                                                    i = 0;
+                                                    break;
+                                                default:
+                                                    for (int h = 1; h == 1;) {
+                                                        for (int j = contSintax; j <= tokens.size(); j++) {
+                                                            if (tokens.get(j).equals("fin")) {
+                                                                palabraAux = palabraAux + " " + tokens.get(j);
+                                                                contSintax = j + 1;
+                                                                j = tokens.size() + 5;
+                                                                h = 0;
+                                                            } else {
+                                                                palabraAux = palabraAux + " " + tokens.get(j);
+                                                            }
+                                                        }
+                                                    }
+                                                    System.out.println(palabraAux + " es ERROR SINTACTICO");
+                                                    break;
+                                            }
+                                        } else {
+                                            palabraAux = palabraAux + " " + tokens.get(contSintax);
+                                            System.out.println(palabraAux + " es ERROR SINTACTICO");
+                                            i = 0;
+                                            contSintax++;
+                                        }
+                                    }
+                                } else {
+                                    for (int i = 1; i == 1;) {
+                                        for (int j = contSintax + 1; j <= tokens.size(); j++) {
+                                            if (tokens.get(j).equals("fin")) {
+                                                palabraAux = palabraAux + " " + tokens.get(j);
+                                                contSintax = j + 1;
+                                                j = tokens.size() + 5;
+                                                i = 0;
+                                            } else {
+                                                palabraAux = palabraAux + " " + tokens.get(j);
+                                            }
+                                        }
+                                    }
+                                    System.out.println(palabraAux + " es ERROR SINTACTICO");
+                                }
+                            }
+                            palabraAux = "";
+                            continuar = true;
+                        } catch (Exception e) {
+                            System.out.println(palabraAux + " es ERROR SINTACTICO");
+                            break;
+                        }
+                        break;
+                    default:
+                        System.out.println("No " + tokens.get(contSintax));
+                        contSintax = contSintax + 1;
+                        break;
+                }
+            } catch (Exception e) {
+                if (contSintax == tokens.size()) {
+
+                } else {
+                    System.out.println(palabraAux + " es ERROR SINTACTICO");
+                }
+                break;
+            }
+        }
+        //System.out.println("token "+tokens.get(1));
     }
 }
