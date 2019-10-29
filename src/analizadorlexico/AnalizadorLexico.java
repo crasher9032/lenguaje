@@ -89,6 +89,9 @@ public class AnalizadorLexico {
                         contador++;
                         break;
                     case "'":
+                        if(String.valueOf(tokens.get(tokens.size()-1))=="palabra"){
+                            tokens.remove(tokens.size()-1);
+                        }
                         contador++;
                         for (int i = 1; i == 1;) {
                             if (String.valueOf(entrada.charAt(contador)).equals("'")) {
@@ -126,35 +129,53 @@ public class AnalizadorLexico {
                         break;
                     case "(":
                         palabraAux = palabraAux + "(";
-                        tokens.add("abrirParentesis");
+                        if(String.valueOf(tokens.get(tokens.size()-1))=="if"){
+                            System.out.println("Inicio de condicion");
+                        }
+                        tokens.add("parentesis");
                         System.out.println(palabraAux + " abre parentesis");
                         palabraAux = "";
                         contador++;
                         break;
                     case ")":
                         palabraAux = palabraAux + ")";
-                        tokens.add("cerrarParentesis");
-                        System.out.println(palabraAux + " ciella parentesis");
+                        if(String.valueOf(tokens.get(tokens.size()-1))=="parentesis"){
+                            tokens.remove(tokens.size()-1);
+                        }
+                        System.out.println(palabraAux + " cierra parentesis");
+                        if(String.valueOf(tokens.get(tokens.size()-1))=="if"){
+                            System.out.println("Cierre de condicion");
+                            tokens.add("condicion");
+                        }
                         palabraAux = "";
                         contador++;
                         break;
                     case "{":
                         palabraAux = palabraAux + "{";
-                        tokens.add("abrirLlaves");
+                        tokens.add("llaves");
+                        if(String.valueOf(tokens.get(tokens.size()-1))=="condicion"){
+                            System.out.println("cuerpo del if");
+                        }
                         System.out.println(palabraAux + " abre llaves");
                         contador++;
                         palabraAux = "";
                         break;
                     case "}":
                         palabraAux = palabraAux + "}";
-                        tokens.add("cerrarLlaves");
-                        System.out.println(palabraAux + " ciella llaves");
+                        if(String.valueOf(tokens.get(tokens.size()-1))=="llaves"){
+                            tokens.remove(tokens.size()-1);
+                            System.out.println(palabraAux + " cierra llaves");
+                        }
+                        if(String.valueOf(tokens.get(tokens.size()-1))=="condicion"){
+                            tokens.remove(tokens.size()-1);
+                            System.out.println("fin de if");
+                            tokens.remove(tokens.size()-1);
+                        }
                         palabraAux = "";
                         contador++;
                         break;
                     case ";":
                         palabraAux = palabraAux + ";";
-                        tokens.add("fin");
                         System.out.println(palabraAux + " es fin de linea");
                         palabraAux = "";
                         contador++;
@@ -519,6 +540,14 @@ public class AnalizadorLexico {
                     System.out.println(palabraAux + " es ERROR SINTACTICO");
                 }
                 break;
+            }
+        }
+        if(tokens.isEmpty()){
+            
+        }else{
+            System.out.println("Problemas");
+            for (int i=0;i<tokens.size();i++) {
+                System.out.println("-"+String.valueOf(tokens.get(i)));
             }
         }
         //System.out.println("token "+tokens.get(1));
