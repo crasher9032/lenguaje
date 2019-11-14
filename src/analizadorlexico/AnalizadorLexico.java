@@ -27,6 +27,7 @@ public class AnalizadorLexico {
         int longitud = entrada.length();
         int contador = 0;
         int contSintax = 1;
+        int contLlaves = 0;
         
         String salida = "1. ";
         int contSalida = 1;
@@ -414,6 +415,117 @@ public class AnalizadorLexico {
                         contLinea++;
                         contSintax++;
                         break;
+                    case "identif":
+                        try {
+                            contSintax++;
+                            if(tokens.get(contSintax).equals("igualacion")){
+                                contSintax++;
+                                if (tokens.get(contSintax).equals("identif")
+                                || tokens.get(contSintax).equals("numero")
+                                || tokens.get(contSintax).equals("palabra")) {
+                                    for (int i = 1; i == 1;) {
+                                        if (tokens.get(contSintax).equals("identif")
+                                        || tokens.get(contSintax).equals("numero")
+                                        || tokens.get(contSintax).equals("palabra")) {
+                                            contSintax++;
+                                            switch (tokens.get(contSintax)) {
+                                                case "suma":
+                                                    contSintax++;
+                                                    break;
+                                                case "resta":
+                                                    contSintax++;
+                                                    break;
+                                                case "multiplicacion":
+                                                    contSintax++;
+                                                    break;
+                                                case "division":
+                                                    contSintax++;
+                                                    break;
+                                                case "fin":
+                                                    if (tokens.get(contSintax + 1).equals("salto")) {
+                                                        contLinea++;
+                                                        contSintax = contSintax + 2;
+                                                    } else {
+                                                        contSintax++;
+                                                    }
+                                                    i = 0;
+                                                    break;
+                                                default:
+                                                    continuar = false;
+                                                    i = 0;
+                                                    break;
+                                            }
+                                        } else {
+                                            continuar = false;
+                                        }
+                                    }
+                                } else {
+                                    continuar = false;
+                                }
+                            }else{
+                                continuar = false;
+                            }
+
+                            if (!continuar) {
+                                System.out.println("Err. Sint. en linea " + contLinea);
+                                System.out.println(" -" + tokens.get(contSintax));
+                                for (int i = 1; i == 1;) {
+                                    for (int j = contSintax; j <= tokens.size(); j++) {
+                                        switch (tokens.get(j)) {
+                                            case "fin":
+                                                if (tokens.get(j + 1).equals("salto")) {
+                                                    contLinea++;
+                                                    contSintax = j + 2;
+                                                } else {
+                                                    contSintax = j + 1;
+                                                }
+                                                j = tokens.size() + 5;
+                                                i = 0;
+                                                break;
+                                            case "salto":
+                                                contLinea++;
+                                                contSintax = j + 1;
+                                                j = tokens.size() + 5;
+                                                i = 0;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Err. Sint. en linea " + contLinea);
+                            System.out.println(" -" + tokens.get(contSintax));
+                            for (int i = 1; i == 1;) {
+                                for (int j = contSintax + 1; j <= tokens.size(); j++) {
+                                    switch (tokens.get(j)) {
+                                        case "fin":
+                                            if (tokens.get(j + 1).equals("salto")) {
+                                                contLinea++;
+                                                contSintax = j + 2;
+                                            } else {
+                                                contSintax = j + 1;
+                                            }
+                                            j = tokens.size() + 5;
+                                            i = 0;
+                                            break;
+                                        case "salto":
+                                            contLinea++;
+                                            contSintax = j + 1;
+                                            j = tokens.size() + 5;
+                                            i = 0;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            fin = true;
+                            break;
+                        }
+                        continuar = true;
+                        break;
                     case "String":
                         try {
                             contSintax++;
@@ -423,10 +535,10 @@ public class AnalizadorLexico {
                                     case "igualacion":
                                         contSintax++;
                                         if (tokens.get(contSintax).equals("identif")
-                                                || tokens.get(contSintax).equals("palabra")) {
+                                        || tokens.get(contSintax).equals("palabra")) {
                                             for (int i = 1; i == 1;) {
                                                 if (tokens.get(contSintax).equals("identif")
-                                                        || tokens.get(contSintax).equals("palabra")) {
+                                                || tokens.get(contSintax).equals("palabra")) {
                                                     contSintax++;
                                                     switch (tokens.get(contSintax)) {
                                                         case "suma":
@@ -441,15 +553,9 @@ public class AnalizadorLexico {
                                                             }
                                                             i = 0;
                                                             break;
-                                                        case "salto":
-                                                            System.out.println("Err. Sint. en linea " + contLinea);
-                                                            System.out.println(" -" + tokens.get(contSintax));
-                                                            contSintax++;
-                                                            contLinea++;
-                                                            i = 0;
-                                                            break;
                                                         default:
                                                             continuar = false;
+                                                            i = 0;
                                                             break;
                                                     }
                                                 } else {
@@ -567,15 +673,9 @@ public class AnalizadorLexico {
                                                             }
                                                             i = 0;
                                                             break;
-                                                        case "salto":
-                                                            System.out.println("Err. Sint. en linea " + contLinea);
-                                                            System.out.println(" -" + tokens.get(contSintax));
-                                                            contSintax++;
-                                                            contLinea++;
-                                                            i = 0;
-                                                            break;
                                                         default:
                                                             continuar = false;
+                                                            i = 0;
                                                             break;
                                                     }
                                                 } else {
@@ -770,7 +870,6 @@ public class AnalizadorLexico {
                                                 || tokens.get(contSintax + 3).equals("identif")
                                                 && tokens.get(contSintax + 4).equals("fin")) {
                                             contSintax = contSintax + 5;
-                                            System.out.println("CCORRECTO");
                                         } else {
                                             continuar = false;
                                         }
@@ -781,7 +880,6 @@ public class AnalizadorLexico {
                                                 || tokens.get(contSintax + 2).equals("identif")
                                                 && tokens.get(contSintax + 3).equals("fin")) {
                                             contSintax = contSintax + 4;
-                                            System.out.println("CCORRECTO");
                                         } else {
                                             continuar = false;
                                         }
@@ -806,7 +904,6 @@ public class AnalizadorLexico {
                                                 || tokens.get(contSintax + 2).equals("identif")) {
                                             if (tokens.get(contSintax + 3).equals("fin")) {
                                                 contSintax = contSintax + 4;
-                                                System.out.println("CORRECTO 2 XD");
                                             } else {
                                                 continuar = false;
                                             }
@@ -825,13 +922,12 @@ public class AnalizadorLexico {
                                     case "identif":
                                         if (tokens.get(contSintax + 1).equals("incremento")
                                                 || tokens.get(contSintax + 1).equals("decremento")) {
-                                            //Error
                                             if (tokens.get(contSintax + 2).equals("cierraparentesis")
-                                                    && tokens.get(contSintax + 3).equals("llave")) {
+                                            && tokens.get(contSintax + 3).equals("llave")) {
+                                                contLlaves++;
                                                 auxList.add("for");
                                                 lineList.add(String.valueOf(contLinea));
                                                 contSintax = contSintax + 4;
-                                                System.out.println("CORRECTO X3 (:");
                                             } else {
                                                 continuar = false;
                                             }
@@ -844,7 +940,6 @@ public class AnalizadorLexico {
                                             auxList.add("for");
                                             lineList.add(String.valueOf(contLinea));
                                             contSintax = contSintax + 2;
-                                            System.out.println("CORRECTO X3 :)");
                                         } else {
                                             continuar = false;
                                         }
@@ -890,10 +985,10 @@ public class AnalizadorLexico {
                                     && tokens.get(contSintax + 2).equals("identif")) {
                                 contSintax = contSintax + 3;
                                 if (tokens.get(contSintax).equals("comparacion")
-                                        || tokens.get(contSintax).equals("diferente")) {
+                                || tokens.get(contSintax).equals("diferente")) {
                                     if (tokens.get(contSintax + 1).equals("numero")
-                                            || tokens.get(contSintax + 1).equals("palabra")
-                                            || tokens.get(contSintax + 1).equals("identif")) {
+                                    || tokens.get(contSintax + 1).equals("palabra")
+                                    || tokens.get(contSintax + 1).equals("identif")) {
                                         contSintax = contSintax + 2;
                                     } else {
                                         continuar = false;
@@ -991,7 +1086,8 @@ public class AnalizadorLexico {
                                 }
                                 if (continuar) {
                                     if (tokens.get(contSintax).equals("cierraparentesis")
-                                            && tokens.get(contSintax + 1).equals("llave")) {
+                                    && tokens.get(contSintax + 1).equals("llave")) {
+                                        contLlaves++;
                                         auxList.add("if");
                                         lineList.add(String.valueOf(contLinea));
                                         contSintax = contSintax + 2;
@@ -1016,6 +1112,7 @@ public class AnalizadorLexico {
                                                     case "cierrallave":
                                                         contSintax = j + 1;
                                                         j = tokens.size() + 5;
+                    
                                                         i = 0;
                                                         break;
                                                     default:
@@ -1070,7 +1167,10 @@ public class AnalizadorLexico {
                         break;
                     case "cierrallave":
                         try {
+                            contLlaves--;
                             contSintax++;
+                            
+                            System.out.println("Llaves: "+contLlaves);
                             switch (auxList.get(auxList.size() - 1)) {
                                 case "if":
                                     for (int i = 1; i == 1;) {
@@ -1078,6 +1178,7 @@ public class AnalizadorLexico {
                                             case "else":
                                                 contSintax++;
                                                 if (tokens.get(contSintax).equals("llave")) {
+                                                    contLlaves++;
                                                     auxList.add("else");
                                                     contSintax++;
                                                 } else {
@@ -1119,11 +1220,16 @@ public class AnalizadorLexico {
                                     }
                                     break;
                                 case "for":
-                                    contSintax++;
-                                    auxList.remove(auxList.size() - 1);
+                                    if(auxList.isEmpty()){
+                                        System.out.println("Se desborda lista");
+                                        System.out.println("Err. Sint. en linea " + contLinea);
+                                        System.out.println(" -" + tokens.get(contSintax-1));
+                                    }else{
+                                        auxList.remove(auxList.size() - 1);
+                                    }
                                     break;
                                 case "else":
-                                    if (tokens.get(contSintax - 1).equals("if")) {
+                                    if (auxList.get(auxList.size() - 2).equals("if")) {
                                         auxList.remove(auxList.size() - 1);
                                         auxList.remove(auxList.size() - 1);
                                     }
@@ -1132,15 +1238,29 @@ public class AnalizadorLexico {
                                     break;
                             }
                         } catch (Exception e) {
-                            contSintax++;
+                            if(auxList.isEmpty()){
+                                System.out.println("Se desborda lista");
+                                System.out.println("Err. Sint. en linea " + contLinea);
+                                System.out.println(" -" + tokens.get(contSintax-1));
+                                contSintax++;
+                            }else{
+                                System.out.println("NO se desborda lista");
+                                auxList.remove(auxList.size() - 1);
+                                contSintax++;
+                            }
                         }
                         break;
                     default:
                         System.out.println("Err. Sint. en linea " + contLinea);
                         System.out.println(" -" + tokens.get(contSintax));
                         for (int i = 1; i == 1;) {
-                            for (int j = contSintax + 1; j <= tokens.size(); j++) {
+                            for (int j = contSintax; j <= tokens.size(); j++) {
                                 switch (tokens.get(j)) {
+                                    case "fin":
+                                        contSintax = j + 1;
+                                        j = tokens.size() + 5;
+                                        i = 0;
+                                        break;
                                     case "salto":
                                         contLinea++;
                                         contSintax = j + 1;
@@ -1162,7 +1282,6 @@ public class AnalizadorLexico {
                                 }
                             }
                         }
-                        contSintax++;
                         break;
                 }
             } catch (Exception e) {
@@ -1172,12 +1291,12 @@ public class AnalizadorLexico {
         }
         try{
             System.out.println(auxList);
-            /*for(int i=0;i<=auxList.size();i++){
+            for(int i=0;i<=auxList.size();i++){
                 System.out.println("Err. Sint. en linea " + lineList.get(i));
                 System.out.println(" -" + auxList.get(i));
-            }*/
+            }
         }catch(Exception e){
-            System.out.println("Entra en catch");
+            System.out.println("Entra a otro lado");
         }
         /*if (tokens.isEmpty()) {
         } else {
